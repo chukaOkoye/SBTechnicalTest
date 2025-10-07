@@ -6,6 +6,7 @@ Homework exercise for candidates.
 
 Please work towards building a simple app with the following acceptance criteria. 
 Please complete as many as you can, and feel free to add anything that will help you demonstrate advanced knowledge.
+Make sure you clone the repository and send us a compressed package (zip) of your solution.
 
 ### Core Focus Areas:
 
