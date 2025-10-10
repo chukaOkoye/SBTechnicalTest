@@ -63,3 +63,29 @@ Show us your best code!
 ## Designs
 
 <img src="Login.png" width="400"> <img src="Photos.png" width="400">
+
+
+## Candidate Notes
+
+(Add your notes here: approach, assumptions, trade-offs, anything you’d like us to know.)
+
+## How to run
+- Have all dependencies synced in the `build.gradle.kts` file.
+- Click RUN
+
+## Tech used
+- Kotlin/Jetpack Compose
+- MVVM
+- Coroutines
+
+## My Approach
+- I took time to understand the data being pulled from the api to determine what and how to display the various items, like the kick-off time due to the status and the scores, and how the design can be implemented based on those values before undertaking the app.
+- **Model** - Contains data models and handles data operations through a Repository abstraction and UseCase, kept the same due to the correct data models being in place already.
+- **ViewModel** - LoginViewModel manages login UI state to determine the navigation graph, which navigates depending on the state. PhotosViewModel contains the logic for fetching the list of photos via the data model, along with mapping of the data model to the UI model for further extraction.
+- **View (UI)** - LoginScreen has the login layout that checks that the text fields are not empty and displays error warnings. Once successfully verified that the fields are not empty, the login button directs the app to the PhotosScreen, which has the loading, error and success state layouts for the photos list. It seems that the thumbnail URL doesn't work, as I tested with a manual image URL link shown in the screenshot below, so I added a placeholder image to display on failure. A Search bar is at the top of the PhotosScreen for filtering by photo title and a topbar for navigation to go back to the LoginScreen, and resets the values once loaded to re-login.
+- 
+<img width="516" height="968" alt="Screenshot 2025-10-10 at 17 01 37" src="https://github.com/user-attachments/assets/1a5856a2-f7ed-488a-b77a-1cb346af1c4a" />
+
+## Future implementations
+- If I had more time, I would have added viewModel and repository tests, along with the debounce functionality for the search bar, for more efficient searching.
+- I would also add pagination to handle the long list of items when loaded.
