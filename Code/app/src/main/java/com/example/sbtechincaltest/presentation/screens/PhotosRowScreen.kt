@@ -7,9 +7,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -56,7 +58,8 @@ fun PhotosRowScreen(images : PhotosUIModel) {
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.surface),
-            horizontalArrangement = Arrangement.spacedBy(15.dp)
+            horizontalArrangement = Arrangement.spacedBy(15.dp),
+            verticalAlignment = Alignment.CenterVertically
         ){
             GlideImage(
                 model = images.thumbnailUrl,
@@ -68,10 +71,12 @@ fun PhotosRowScreen(images : PhotosUIModel) {
             )
 
             Column(modifier = Modifier.padding(12.dp)
+            .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
                 ){
                 Text(images.title,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp)
+                    fontSize = 20.sp)
             }
         }
 
