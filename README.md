@@ -76,15 +76,24 @@ Show us your best code!
 ## Tech used
 - Kotlin/Jetpack Compose
 - MVVM
+- Glide
+- Compose Navigation
 - Coroutines
 
 ## My Approach
 - I took time to understand the data being pulled from the api to determine what and how to display the various items, like the kick-off time due to the status and the scores, and how the design can be implemented based on those values before undertaking the app.
 - **Model** - Contains data models and handles data operations through a Repository abstraction and UseCase, kept the same due to the correct data models being in place already.
 - **ViewModel** - LoginViewModel manages login UI state to determine the navigation graph, which navigates depending on the state. PhotosViewModel contains the logic for fetching the list of photos via the data model, along with mapping of the data model to the UI model for further extraction.
-- **View (UI)** - LoginScreen has the login layout that checks that the text fields are not empty and displays error warnings. Once successfully verified that the fields are not empty, the login button directs the app to the PhotosScreen, which has the loading, error and success state layouts for the photos list. It seems that the thumbnail URL doesn't work, as I tested with a manual image URL link shown in the screenshot below, so I added a placeholder image to display on failure. A Search bar is at the top of the PhotosScreen for filtering by photo title and a topbar for navigation to go back to the LoginScreen, and resets the values once loaded to re-login.
-- 
-<img width="516" height="968" alt="Screenshot 2025-10-10 at 17 01 37" src="https://github.com/user-attachments/assets/1a5856a2-f7ed-488a-b77a-1cb346af1c4a" />
+- **View (UI)** - LoginScreen has the login layout that checks that the text fields are not empty and displays error warnings. Once successfully verified that the fields are not empty, the login button directs the app to the PhotosScreen, which has the loading, error and success state layouts for the photos list. It seems that the thumbnail URL doesn't work from the feed, as I tested with a manual image URL link shown in the screenshot below, so I added a placeholder image to display on failure. A Search bar is at the top of the PhotosScreen for filtering by photo title and a topbar for navigation to go back to the LoginScreen, and resets the values once loaded to re-login.
+
+  
+<img width="459" height="865" alt="Screenshot 2025-10-10 at 17 39 17" src="https://github.com/user-attachments/assets/feb45682-8004-498e-a9ac-7075fb18a8e8" />
+
+***
+
+#### Screenshot of Thumbnail URL's not showing
+<img width="795" height="448" alt="Screenshot 2025-10-10 at 17 34 58" src="https://github.com/user-attachments/assets/04a9ff55-4077-4765-b9e7-a03be25ccf0b" />
+
 
 ## Future implementations
 - If I had more time, I would have added viewModel and repository tests, along with the debounce functionality for the search bar, for more efficient searching.
