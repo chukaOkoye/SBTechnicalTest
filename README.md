@@ -85,7 +85,6 @@ Show us your best code!
 - **Model** - Contains data models and handles data operations through a Repository abstraction and UseCase, kept the same due to the correct data models being in place already.
 - **ViewModel** - LoginViewModel manages login UI state to determine the navigation graph, which navigates depending on the state. PhotosViewModel contains the logic for fetching the list of photos via the data model, along with mapping of the data model to the UI model for further extraction.
 - **View (UI)** - LoginScreen has the login layout that checks that the text fields are not empty and displays error warnings. Once successfully verified that the fields are not empty, the login button directs the app to the PhotosScreen, which has the loading, error and success state layouts for the photos list. It seems that the thumbnail URL doesn't work from the feed, as I tested with a manual image URL link shown in the screenshot below, so I added a placeholder image to display on failure. A Search bar is at the top of the PhotosScreen for filtering by photo title and a topbar for navigation to go back to the LoginScreen, and resets the values once loaded to re-login.
-
   
 <img width="459" height="865" alt="Screenshot 2025-10-10 at 17 39 17" src="https://github.com/user-attachments/assets/feb45682-8004-498e-a9ac-7075fb18a8e8" />
 
