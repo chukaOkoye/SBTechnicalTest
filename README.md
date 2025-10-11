@@ -72,6 +72,7 @@ Show us your best code!
 ## How to run
 - Have all dependencies synced in the `build.gradle.kts` file.
 - Click RUN
+- In the LoginScreen, fill the email and password fields with any text -> Click 'Log in' -> Takes you to PhotosScreen -> Click the back arrow in the top navigation bar to go back to LoginScreen.
 
 ## Tech used
 - Kotlin/Jetpack Compose
