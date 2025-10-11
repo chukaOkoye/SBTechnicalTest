@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,10 +31,13 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.Color.Companion.Unspecified
@@ -60,6 +65,12 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
 
     var emailError by remember {mutableStateOf(false)}
     var passwordError by remember {mutableStateOf(false)}
+
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
+    val focusRequester = remember {
+        FocusRequester()
+    }
 
     LaunchedEffect(true) {
         loginViewModel.logout()
@@ -90,7 +101,7 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
                 textAlign = TextAlign.Left,
             )
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(6.dp))
 
             Text("Login to your Student Beans Account",
                 fontWeight = FontWeight.ExtraBold,
@@ -130,24 +141,38 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
                 onValueChange = {
                     password = it
                 },
-                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp)
+                    .fillMaxWidth(),
                 placeholder = {
                     Text(text = "Password")
                 },
                 label = {
                     Text("Enter your password")
                 },
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 supportingText = {
                     if(passwordError){
                         Text("Enter a valid password")
                     }
                 },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Down)}
+                    onDone = { focusRequester.requestFocus()}
                 ),
-                isError = passwordError
+
+                isError = passwordError,
+                trailingIcon = {
+                    val image = if (passwordVisible)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
+
+                    val description = if (passwordVisible) "Hide password" else "Show password"
+
+                    IconButton(onClick = {passwordVisible = !passwordVisible}){
+                        Icon(imageVector  = image, description)
+                    }
+                },
+                singleLine = true
             )
 
             Spacer(Modifier.height(25.dp))
@@ -159,11 +184,10 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
 
                     if(email.isNotEmpty() && password.isNotEmpty() ){
                         loginViewModel.login()
-                        Toast.makeText(context, "Login success!", Toast.LENGTH_SHORT).show()
                     }
 
                 },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).focusRequester(focusRequester)
             )
 
         }

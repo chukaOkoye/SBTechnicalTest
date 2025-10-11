@@ -52,7 +52,7 @@ fun PhotosRowScreen(images : PhotosUIModel) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(10.dp)){
+        elevation = CardDefaults.cardElevation(3.dp)){
 
         Row(modifier = Modifier.fillMaxWidth()
             .padding(horizontal = 16.dp)
@@ -65,8 +65,8 @@ fun PhotosRowScreen(images : PhotosUIModel) {
                 model = images.thumbnailUrl,
                 contentDescription = "Photo image",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.padding(12.dp)
-                                    .size(96.dp),
+                modifier = Modifier.padding(vertical = 12.dp)
+                                    .size(100.dp),
                 failure = placeholder(R.drawable.ic_launcher_foreground),
             )
 
