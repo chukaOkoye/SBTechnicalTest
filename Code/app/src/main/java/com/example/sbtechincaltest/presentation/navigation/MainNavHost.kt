@@ -36,7 +36,7 @@ fun MainNavGraph(
                 loginViewModel = viewModel,
                 onLoginSuccess = {
                     navController.navigate("photos_screen") {
-                        popUpTo("login_screen") { inclusive = true }
+                        popUpTo("login_screen") { inclusive = false }
                     }
                 }
             )
@@ -46,7 +46,9 @@ fun MainNavGraph(
             val viewModel: PhotosViewModel = hiltViewModel()
             PhotosScreen(
                 viewModel = viewModel,
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.navigate("login_screen") {
+                    popUpTo("photos_screen") { inclusive = true }
+                } }
             )
         }
     }
