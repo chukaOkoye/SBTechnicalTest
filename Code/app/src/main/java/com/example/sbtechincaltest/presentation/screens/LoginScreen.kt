@@ -1,11 +1,6 @@
 package com.example.sbtechincaltest.presentation.screens
 
-import android.util.Patterns
-import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,12 +18,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,12 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Red
-import androidx.compose.ui.graphics.Color.Companion.Unspecified
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -52,20 +40,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.sbtechincaltest.R
 import com.example.sbtechincaltest.presentation.viewmodel.LoginViewModel
+import kotlin.math.log
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel,) {
+fun LoginScreen(loginViewModel: LoginViewModel, onLoginSuccess: () -> Unit) {
 
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("")}
-
-    var emailError by remember {mutableStateOf(false)}
-    var passwordError by remember {mutableStateOf(false)}
+    val viewmodel by loginViewModel.user.collectAsState()
 
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
@@ -73,8 +56,10 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
         FocusRequester()
     }
 
-    LaunchedEffect(true) {
-        loginViewModel.logout()
+    LaunchedEffect(viewmodel.isAuthenticated) {
+        if (viewmodel.isAuthenticated == true) {
+            onLoginSuccess()
+        }
     }
 
 
@@ -113,10 +98,10 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
             Spacer(Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = email,
+                value = viewmodel.email,
                 singleLine = true,
                 onValueChange = {
-                    email = it
+                    loginViewModel.updateEmail(it)
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(
@@ -131,16 +116,14 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
                     Text(text = "Email")
                 },
                 supportingText = {
-                    if(emailError){
-                        Text("Enter a valid email address")
-                    }
+                    viewmodel.emailError?.let { Text(it)}
                 },
-                isError = emailError
+                isError = viewmodel.emailError != null
             )
             OutlinedTextField(
-                value = password,
+                value = viewmodel.password,
                 onValueChange = {
-                    password = it
+                    loginViewModel.updatePassword(it)
                 },
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp)
                     .fillMaxWidth(),
@@ -152,8 +135,8 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
                 },
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 supportingText = {
-                    if(passwordError){
-                        Text("Enter a valid password")
+                    viewmodel.passwordError?.let{
+                        Text(it)
                     }
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -161,7 +144,7 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
                     onDone = { focusRequester.requestFocus()}
                 ),
 
-                isError = passwordError,
+                isError = viewmodel.passwordError != null,
                 trailingIcon = {
                     val image = if (passwordVisible)
                         Icons.Filled.Visibility
@@ -180,12 +163,8 @@ fun LoginScreen(loginViewModel: LoginViewModel,) {
             Button(
                 content = { Text("Log in") },
                 onClick = {
-                    emailError = email.isEmpty()
-                    passwordError = password.isEmpty()
 
-                    if(email.isNotEmpty() && password.isNotEmpty() ){
                         loginViewModel.login()
-                    }
 
                 },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).focusRequester(focusRequester)

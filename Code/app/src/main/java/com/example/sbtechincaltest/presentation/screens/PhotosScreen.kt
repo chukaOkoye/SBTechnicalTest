@@ -50,7 +50,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 @Composable
 fun PhotosScreen(
     viewModel: PhotosViewModel,
-    paddingValues: PaddingValues, navigateBack: () -> Unit
+    onNavigateBack: () -> Unit
 ) {
     val state by viewModel.photosState.collectAsState()
     var searchText by remember { mutableStateOf("") }
@@ -66,7 +66,7 @@ fun PhotosScreen(
             CenterAlignedTopAppBar(
                 title = { Text("Photos") },
                 navigationIcon = {
-                    IconButton(onClick = navigateBack)
+                    IconButton(onClick = onNavigateBack)
                     {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,

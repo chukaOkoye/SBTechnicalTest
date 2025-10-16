@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.sbtechincaltest.presentation.navigation.MainNavGraph
 import com.example.sbtechincaltest.presentation.screens.LoginScreen
 import com.example.sbtechincaltest.presentation.screens.PhotosScreen
@@ -34,8 +35,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val loginViewmodel: LoginViewModel by viewModels()
-    private val photosViewModel: PhotosViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,14 +42,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent{
             SBTechnicalTheme {
-                Scaffold(modifier = Modifier.background(Color.White),
-                ) { paddingValues ->
-                    MainNavGraph(loginViewmodel, photosViewModel, paddingValues)
-                }
+                MainApp()
+
             }
 
         }
 
     }
 
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun MainApp() {
+        val navController = rememberNavController()
+        Scaffold {
+            MainNavGraph(navController = navController)
+        }
+    }
+
 }
+
