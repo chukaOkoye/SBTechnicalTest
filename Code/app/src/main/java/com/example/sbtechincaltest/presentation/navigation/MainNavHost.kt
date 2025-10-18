@@ -35,9 +35,7 @@ fun MainNavGraph(
             LoginScreen(
                 loginViewModel = viewModel,
                 onLoginSuccess = {
-                    navController.navigate("photos_screen") {
-                        popUpTo("login_screen") { inclusive = false }
-                    }
+                    navController.navigate("photos_screen")
                 }
             )
         }
